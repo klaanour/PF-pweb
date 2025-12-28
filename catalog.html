@@ -45,10 +45,10 @@ while ($p = $result->fetch_assoc()):
     <p><?= $p['description'] ?></p>
     <p><strong>$<?= $p['price'] ?></strong></p>
 
-    <form action="cart.php" method="POST">
-        <input type="hidden" name="product_id" value="<?= $p['id'] ?>">
-        <button name="add">Add to Cart</button>
-    </form>
+    <button class="btn add-btn" data-id="<?= $p['id'] ?>">
+    Add to cart
+    </button> 
+    
 </div>
 <?php endwhile; ?>
 </main>
@@ -56,4 +56,3 @@ while ($p = $result->fetch_assoc()):
 <script src="script.js"></script>
 </body>
 </html>
-
