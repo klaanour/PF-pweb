@@ -1,0 +1,58 @@
+<?php
+require 'config.php';
+if (!isset($_SESSION['user'])) {
+    header("Location: login.html");
+    exit;
+}
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Catalog</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>Product Catalog</h1>
+    <nav>
+        <?php
+        // Show category links
+        $catRes = $conn->query("SELECT * FROM categories");
+        while ($cat = $catRes->fetch_assoc()) {
+            echo '<a href="catalog.html?cat='.$cat['id'].'">'.$cat['name'].'</a> ';
+        }
+        ?>
+        <a href="cart.php">Cart</a>
+        <a href="logout.php">Logout</a>
+    </nav>
+</header>
+
+<main>
+<?php
+// Get selected category
+$cat_id = isset($_GET['cat']) ? $_GET['cat'] : 0;
+$sql = "SELECT * FROM products";
+if ($cat_id) $sql .= " WHERE category_id=$cat_id";
+$result = $conn->query($sql);
+
+while ($row = $result->fetch_assoc()) {
+?>
+    <div class="product-card">
+        <h3><?php echo $row['name']; ?></h3>
+        <p><?php echo $row['description']; ?></p>
+        <p>$<?php echo $row['price']; ?></p>
+
+        <form action="cart.php" method="POST">
+            <input type="hidden" name="product_id" value="<?php echo $row['id']; ?>">
+            <input type="submit" name="add" value="Add to Cart">
+        </form>
+    </div>
+<?php
+}
+?>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
