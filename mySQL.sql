@@ -1,21 +1,28 @@
-CREATE DATABASE ecommerce_db; 
+CREATE DATABASE IF NOT EXISTS ecommerce_db;
 USE ecommerce_db;
 
-CREATE TABLE categories (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(100)
+CREATE TABLE IF NOT EXISTS categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100)
 );
 
-CREATE TABLE products (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(100),
-  description TEXT,
-  price DECIMAL(10,2),
-  category_id INT,
-  FOREIGN KEY (category_id) REFERENCES categories(id)
+CREATE TABLE IF NOT EXISTS products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    description TEXT,
+    price DECIMAL(10,2),
+    category_id INT,
+    FOREIGN KEY (category_id) REFERENCES categories(id)
 );
 
-INSERT INTO categories (name) VALUES ('Phones'), ('Laptops'), ('Accessories');
+
+INSERT INTO categories (name) VALUES 
+('Phones'),
+('Laptops'),
+('Accessories'),
+('Headphones'),
+('Smart Watches');
+
 
 INSERT INTO products (name, description, price, category_id) VALUES
 ('Phone', 'A smartphone', 500, 1),
@@ -25,4 +32,8 @@ INSERT INTO products (name, description, price, category_id) VALUES
 ('MacBook Air', 'Apple laptop with M2 chip', 1500, 2),
 ('Dell XPS 13', 'Compact powerful laptop', 1300, 2),
 ('Wireless Mouse', 'Ergonomic Bluetooth mouse', 50, 3),
-('USB-C Hub', 'Multi-port adapter', 30, 3);
+('USB-C Hub', 'Multi-port adapter', 30, 3),
+('Bose QuietComfort 45', 'Noise-cancelling headphones', 350, 4),
+('Sony WH-1000XM5', 'Premium wireless headphones', 400, 4),
+('Apple Watch Series 9', 'Smart watch with fitness tracking', 450, 5),
+('Samsung Galaxy Watch 6', 'Smart watch for Android', 400, 5);
