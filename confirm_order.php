@@ -19,7 +19,7 @@ $_SESSION['cart'] = [];
 <div class="container">
     <h1>✅ Order Confirmed</h1>
     <p>Your order has been successfully placed.</p>
-    <a href="catalog.php" class="btn">Continue Shopping</a>
+    <a href="catalog.php" class="btn">Back to Catalog</a>
 </div>
 
 </body>
