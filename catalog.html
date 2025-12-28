@@ -1,7 +1,8 @@
 <?php
 require 'config.php';
+
 if (!isset($_SESSION['user'])) {
-    header("Location: login.html");
+    header("Location: login.php");
     exit;
 }
 ?>
@@ -16,11 +17,11 @@ if (!isset($_SESSION['user'])) {
 <header>
     <h1>Product Catalog</h1>
     <nav>
+        <a href="catalog.php">All</a>
         <?php
-        // Show category links
-        $catRes = $conn->query("SELECT * FROM categories");
-        while ($cat = $catRes->fetch_assoc()) {
-            echo '<a href="catalog.html?cat='.$cat['id'].'">'.$cat['name'].'</a> ';
+        $cats = $conn->query("SELECT * FROM categories");
+        while ($cat = $cats->fetch_assoc()) {
+            echo '<a href="catalog.php?cat='.$cat['id'].'">'.$cat['name'].'</a>';
         }
         ?>
         <a href="cart.php">Cart</a>
@@ -30,27 +31,26 @@ if (!isset($_SESSION['user'])) {
 
 <main>
 <?php
-// Get selected category
-$cat_id = isset($_GET['cat']) ? $_GET['cat'] : 0;
+$cat_id = $_GET['cat'] ?? null;
 $sql = "SELECT * FROM products";
-if ($cat_id) $sql .= " WHERE category_id=$cat_id";
+if ($cat_id) {
+    $sql .= " WHERE category_id = $cat_id";
+}
 $result = $conn->query($sql);
 
-while ($row = $result->fetch_assoc()) {
+while ($p = $result->fetch_assoc()):
 ?>
-    <div class="product-card">
-        <h3><?php echo $row['name']; ?></h3>
-        <p><?php echo $row['description']; ?></p>
-        <p>$<?php echo $row['price']; ?></p>
+<div class="product-card">
+    <h3><?= $p['name'] ?></h3>
+    <p><?= $p['description'] ?></p>
+    <p><strong>$<?= $p['price'] ?></strong></p>
 
-        <form action="cart.php" method="POST">
-            <input type="hidden" name="product_id" value="<?php echo $row['id']; ?>">
-            <input type="submit" name="add" value="Add to Cart">
-        </form>
-    </div>
-<?php
-}
-?>
+    <form action="cart.php" method="POST">
+        <input type="hidden" name="product_id" value="<?= $p['id'] ?>">
+        <button name="add">Add to Cart</button>
+    </form>
+</div>
+<?php endwhile; ?>
 </main>
 
 <script src="script.js"></script>
