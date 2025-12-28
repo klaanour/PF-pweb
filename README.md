@@ -287,12 +287,5 @@ This e-commerce application successfully demonstrates the core principles of web
 3. Input validation libraries
 4. HTTPS implementation
 
-### **8.4 Deployment Instructions**
-1. Install XAMPP and start Apache and MySQL services
-2. Place all files in `C:\xampp\htdocs\ecommerce\`
-3. Access phpMyAdmin and create `ecommerce_db` database
-4. Import the provided SQL script
-5. Access application at `http://localhost/ecommerce/`
-
-### **8.5 Final Assessment**
+### **8.4 Final Assessment**
 This project represents a comprehensive implementation of e-commerce fundamentals suitable for academic evaluation. The code demonstrates proper web development practices while maintaining simplicity and clarity for educational purposes. The modular design allows for easy expansion, making it an excellent foundation for more advanced web development projects.
