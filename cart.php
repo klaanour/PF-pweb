@@ -9,48 +9,88 @@ if (!isset($_SESSION['user'])) {
 $_SESSION['cart'] = $_SESSION['cart'] ?? [];
 
 if (isset($_POST['add'])) {
-    $id = $_POST['product_id'];
+    $id = (int)$_POST['product_id'];
     $_SESSION['cart'][$id] = ($_SESSION['cart'][$id] ?? 0) + 1;
 }
 
 if (isset($_POST['remove'])) {
-    unset($_SESSION['cart'][$_POST['remove_id']]);
+    $rid = (int)$_POST['remove_id'];
+    unset($_SESSION['cart'][$rid]);
 }
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Cart</title>
+    <title>Your Cart</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>Your Cart</h1>
+<header>
+    <h1>Your Shopping Cart</h1>
+    <nav>
+        <a href="catalog.php">Catalog</a>
+        <a href="logout.php">Logout</a>
+    </nav>
+</header>
 
-<?php
-$total = 0;
-if (!$_SESSION['cart']) {
-    echo "<p>Cart is empty</p>";
-} else {
-    foreach ($_SESSION['cart'] as $id => $qty) {
-        $p = $conn->query("SELECT * FROM products WHERE id=$id")->fetch_assoc();
-        $sub = $p['price'] * $qty;
-        $total += $sub;
+<div class="cart-container">
 
-        echo "<p>{$p['name']} × $qty = $$sub</p>";
-        echo '<form method="POST">
-                <input type="hidden" name="remove_id" value="'.$id.'">
-                <button name="remove">Remove</button>
-              </form>';
-    }
-    echo "<h3>Total: $$total</h3>";
-    echo '<a class="btn" href="confirm_order.php">Confirm Order</a>';
-}
-?>
+<?php if (empty($_SESSION['cart'])): ?>
 
-<br><br>
-<a href="catalog.php">Back to Catalog</a>
+    <p class="cart-empty">Your cart is empty 🛒</p>
+    <div style="text-align:center;">
+        <a href="catalog.php" class="btn-back">Back to Catalog</a>
+    </div>
+
+<?php else: ?>
+
+    <table class="cart-table">
+        <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Subtotal</th>
+            <th>Action</th>
+        </tr>
+
+        <?php
+        $total = 0;
+        foreach ($_SESSION['cart'] as $id => $qty):
+            $res = $conn->query("SELECT * FROM products WHERE id = $id");
+            if (!$res || $res->num_rows == 0) continue;
+            $p = $res->fetch_assoc();
+
+            $sub = $p['price'] * $qty;
+            $total += $sub;
+        ?>
+        <tr>
+            <td><?= htmlspecialchars($p['name']) ?></td>
+            <td>$<?= number_format($p['price'], 2) ?></td>
+            <td><?= $qty ?></td>
+            <td>$<?= number_format($sub, 2) ?></td>
+            <td>
+                <form method="POST">
+                    <input type="hidden" name="remove_id" value="<?= $id ?>">
+                    <button class="btn btn-remove" name="remove">Remove</button>
+                </form>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
+
+    <div class="cart-total">
+        Total: $<?= number_format($total, 2) ?>
+    </div>
+
+    <div style="text-align:center;">
+        <a href="catalog.php" class="btn-back">Continue Shopping</a>
+        <a href="confirm_order.php" class="btn-checkout">Confirm Order</a>
+    </div>
+
+<?php endif; ?>
+
+</div>
 
 </body>
 </html>
-
