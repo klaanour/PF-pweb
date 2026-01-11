@@ -22,7 +22,7 @@ Frontend: HTML5, CSS3, JavaScript (ES6)
 Backend: PHP 7.4+
 Database: MySQL 8.0+
 Server: Apache HTTP Server
-Development Environment: XAMPP 3.3.0
+Development Environment: XAMPP 3.3.0 /Wampserver
 ```
 
 ### **2.2 File Structure**
