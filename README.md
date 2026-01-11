@@ -31,7 +31,7 @@ ecommerce/
 ├── index.php          # Landing page
 ├── add_to_cart.php    # Adding items to cart    
 ├── login.php          # User login interface
-├── login.php          # Authentication processing
+├── confirm_order.php  # Authentication processing
 ├── catalog.php        # Product catalog with filtering
 ├── cart.php           # Shopping cart management
 ├── logout.php         # Session termination
